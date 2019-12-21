@@ -1,6 +1,9 @@
 FROM node:13-stretch as build
 WORKDIR /var/myrunes
 ADD . .
+RUN [ -e ${VUE_APP_API_HOST_URL} ] ||\
+    echo "VUE_APP_API_HOST_URL=${VUE_APP_API_HOST_URL}" \
+    >> .env
 RUN npm ci &&\
     npm run build
 

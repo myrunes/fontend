@@ -2,14 +2,17 @@
 
 import request from 'request';
 
+const PROD_HOST =
+  process.env.VUE_APP_API_HOST_URL || `${window.location.origin}/api`;
+
 const HOST =
   process.env.NODE_ENV === 'production'
-    ? window.location.origin
-    : 'http://localhost:8080';
+    ? PROD_HOST
+    : 'http://localhost:8080/api';
 
 function getMe() {
   return _req({
-    url: `${HOST}/api/users/me`,
+    url: `${HOST}/users/me`,
     method: 'GET',
     withCredentials: true,
   });
@@ -17,14 +20,14 @@ function getMe() {
 
 function checkUsername(uname) {
   return _req({
-    url: `${HOST}/api/users/${uname}`,
+    url: `${HOST}/users/${uname}`,
     method: 'GET',
   });
 }
 
 function register(username, password, remember) {
   return _req({
-    url: `${HOST}/api/users`,
+    url: `${HOST}/users`,
     method: 'POST',
     json: {
       username,
@@ -36,7 +39,7 @@ function register(username, password, remember) {
 
 function login(username, password, remember) {
   return _req({
-    url: `${HOST}/api/login`,
+    url: `${HOST}/login`,
     method: 'POST',
     json: {
       username,
@@ -48,28 +51,28 @@ function login(username, password, remember) {
 
 function logout() {
   return _req({
-    url: `${HOST}/api/logout`,
+    url: `${HOST}/logout`,
     method: 'POST',
   });
 }
 
 function getChamps() {
   return _req({
-    url: `${HOST}/api/resources/champions`,
+    url: `${HOST}/resources/champions`,
     method: 'GET',
   });
 }
 
 function getRunes() {
   return _req({
-    url: `${HOST}/api/resources/runes`,
+    url: `${HOST}/resources/runes`,
     method: 'GET',
   });
 }
 
 function getPages(sortBy, champion, short, filter) {
   return _req({
-    url: `${HOST}/api/pages`,
+    url: `${HOST}/pages`,
     method: 'GET',
     qs: {
       sortBy,
@@ -82,14 +85,14 @@ function getPages(sortBy, champion, short, filter) {
 
 function getPage(uid) {
   return _req({
-    url: `${HOST}/api/pages/${uid}`,
+    url: `${HOST}/pages/${uid}`,
     method: 'GET',
   });
 }
 
 function updatePage(uid, page) {
   return _req({
-    url: `${HOST}/api/pages/${uid}`,
+    url: `${HOST}/pages/${uid}`,
     method: 'POST',
     json: page,
   });
@@ -97,7 +100,7 @@ function updatePage(uid, page) {
 
 function createPage(page) {
   return _req({
-    url: `${HOST}/api/pages`,
+    url: `${HOST}/pages`,
     method: 'POST',
     json: page,
   });
@@ -105,14 +108,14 @@ function createPage(page) {
 
 function deletePage(uid) {
   return _req({
-    url: `${HOST}/api/pages/${uid}`,
+    url: `${HOST}/pages/${uid}`,
     method: 'DELETE',
   });
 }
 
 function updateUser(update) {
   return _req({
-    url: `${HOST}/api/users/me`,
+    url: `${HOST}/users/me`,
     method: 'POST',
     json: update,
   });
@@ -120,7 +123,7 @@ function updateUser(update) {
 
 function deleteUser(currpassword) {
   return _req({
-    url: `${HOST}/api/users/me`,
+    url: `${HOST}/users/me`,
     method: 'DELETE',
     json: { currpassword },
   });
@@ -128,28 +131,28 @@ function deleteUser(currpassword) {
 
 function getSessions() {
   return _req({
-    url: `${HOST}/api/sessions`,
+    url: `${HOST}/sessions`,
     method: 'GET',
   });
 }
 
 function deleteSession(sessionid) {
   return _req({
-    url: `${HOST}/api/sessions/${sessionid}`,
+    url: `${HOST}/sessions/${sessionid}`,
     method: 'DELETE',
   });
 }
 
 function getFavorites() {
   return _req({
-    url: `${HOST}/api/favorites`,
+    url: `${HOST}/favorites`,
     method: 'GET',
   });
 }
 
 function setFavorites(favorites) {
   return _req({
-    url: `${HOST}/api/favorites`,
+    url: `${HOST}/favorites`,
     method: 'POST',
     json: { favorites },
   });
@@ -157,14 +160,14 @@ function setFavorites(favorites) {
 
 function getShare(ident) {
   return _req({
-    url: `${HOST}/api/shares/${ident}`,
+    url: `${HOST}/shares/${ident}`,
     method: 'GET',
   });
 }
 
 function createShare(share) {
   return _req({
-    url: `${HOST}/api/shares`,
+    url: `${HOST}/shares`,
     method: 'POST',
     json: share,
   });
@@ -172,7 +175,7 @@ function createShare(share) {
 
 function updateShare(share) {
   return _req({
-    url: `${HOST}/api/shares/${share.uid}`,
+    url: `${HOST}/shares/${share.uid}`,
     method: 'POST',
     json: share,
   });
@@ -180,42 +183,42 @@ function updateShare(share) {
 
 function deleteShare(share) {
   return _req({
-    url: `${HOST}/api/shares/${share.uid}`,
+    url: `${HOST}/shares/${share.uid}`,
     method: 'DELETE',
   });
 }
 
 function getVersion() {
   return _req({
-    url: `${HOST}/api/version`,
+    url: `${HOST}/version`,
     method: 'GET',
   });
 }
 
 function getAPIToken() {
   return _req({
-    url: `${HOST}/api/apitoken`,
+    url: `${HOST}/apitoken`,
     method: 'GET',
   });
 }
 
 function generateAPIToken() {
   return _req({
-    url: `${HOST}/api/apitoken`,
+    url: `${HOST}/apitoken`,
     method: 'POST',
   });
 }
 
 function deleteAPIToken() {
   return _req({
-    url: `${HOST}/api/apitoken`,
+    url: `${HOST}/apitoken`,
     method: 'DELETE',
   });
 }
 
 function setPageOrder(pageorder, champion) {
   return _req({
-    url: `${HOST}/api/users/me/pageorder`,
+    url: `${HOST}/users/me/pageorder`,
     method: 'POST',
     json: { pageorder },
     qs: { champion },
@@ -228,7 +231,7 @@ function setMailAddress(mailaddress, reset) {
   }
 
   return _req({
-    url: `${HOST}/api/users/me/mail`,
+    url: `${HOST}/users/me/mail`,
     method: 'POST',
     json: { mailaddress, reset },
   });
@@ -236,7 +239,7 @@ function setMailAddress(mailaddress, reset) {
 
 function confirmMail(token) {
   return _req({
-    url: `${HOST}/api/users/me/mail/confirm`,
+    url: `${HOST}/users/me/mail/confirm`,
     method: 'POST',
     json: { token },
   });
@@ -244,7 +247,7 @@ function confirmMail(token) {
 
 function resetPassword(mailaddress) {
   return _req({
-    url: `${HOST}/api/users/me/passwordreset`,
+    url: `${HOST}/users/me/passwordreset`,
     method: 'POST',
     json: { mailaddress },
   });
@@ -252,7 +255,7 @@ function resetPassword(mailaddress) {
 
 function resetPasswordConfirm(token, new_password, page_names) {
   return _req({
-    url: `${HOST}/api/users/me/passwordreset/confirm`,
+    url: `${HOST}/users/me/passwordreset/confirm`,
     method: 'POST',
     json: { token, new_password, page_names },
   });
