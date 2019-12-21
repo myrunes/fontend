@@ -8,5 +8,6 @@ FROM nginx:latest AS final
 LABEL maintainer="zekro <contact@zekro.de>"
 WORKDIR /app
 COPY --from=build /var/myrunes/dist .
+ADD ./config/nginx.conf /etc/nginx/conf.d/myrunes.conf
 
 EXPOSE 8080
