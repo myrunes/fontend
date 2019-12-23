@@ -22,10 +22,12 @@
       This service is (ad-)free and open source, so we don't earn any money with this page.
       Per year, we pay €20 (~ $22) for the myrunes.com domain and €60 (~ $66) for the root server.
       So, if you want to support us, you can do this via
-      <a href="/paypal" target="_blank">
+      <a
+        href="/paypal"
+        target="_blank"
+      >
         <b>PayPal</b>
       </a>, if you want.
-      .
     </p>
   </div>
 </template>
