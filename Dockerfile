@@ -4,6 +4,8 @@ ADD . .
 RUN [ -e ${VUE_APP_API_HOST_URL} ] ||\
     echo "VUE_APP_API_HOST_URL=${VUE_APP_API_HOST_URL}" \
     >> .env
+RUN echo "VUE_APP_VERSION=$(git describe --tags || echo 'DEBUG_BUILD')" \
+    >> .env
 RUN npm ci &&\
     npm run build
 

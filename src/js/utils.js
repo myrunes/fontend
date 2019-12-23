@@ -69,6 +69,10 @@ function copyToClipboard(text) {
   });
 }
 
+function getEnv() {
+  return process.env;
+}
+
 // ----------------------------------
 
 export default {
@@ -78,4 +82,5 @@ export default {
   setWindowListener,
   removeWindowListener,
   copyToClipboard,
+  getEnv,
 };
