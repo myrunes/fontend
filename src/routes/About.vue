@@ -47,17 +47,17 @@
     <h2 class="mt-4 mb-3">Information and Privacy</h2>
     <a
       class="icon-link info"
-      href="https://github.com/myrunes/myrunes/blob/master/docs/imprint.txt"
+      href="https://github.com/myrunes/backend/blob/master/docs/imprint.txt"
       target="_blank"
     >Imprint</a>
     <a
       class="icon-link info"
-      href="https://github.com/myrunes/myrunes/blob/master/docs/cookie-usage.md"
+      href="https://github.com/myrunes/backend/blob/master/docs/cookie-usage.md"
       target="_blank"
     >Cookie and Local Storage Usage</a>
     <a
       class="icon-link info"
-      href="https://github.com/myrunes/myrunes/blob/master/LICENSE"
+      href="https://github.com/myrunes/backend/blob/master/LICENSE"
       target="_blank"
     >Open Source Licence (MIT)</a>
   </div>

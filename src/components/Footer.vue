@@ -5,7 +5,7 @@
     <p>
       © 2019 MYRUNES [{{ version }}] &nbsp;&nbsp;|&nbsp;&nbsp;
       <a
-        href="https://github.com/myrunes/myrunes/blob/master/docs/imprint.txt"
+        href="https://github.com/myrunes/backend/blob/master/docs/imprint.txt"
       >IMPRINT</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;
       <router-link to="/contact">CONTACT</router-link>&nbsp;&nbsp;|&nbsp;&nbsp;
