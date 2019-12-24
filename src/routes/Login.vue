@@ -4,12 +4,7 @@
   <div class="outer-container">
     <div class="container my-auto">
       <div class="logo mx-auto"></div>
-      <Banner
-        ref="banner"
-        class="mx-auto mb-5"
-        width="300px"
-        @closing="bannerClosing"
-      ></Banner>
+      <Banner ref="banner" class="mx-auto mb-5" width="300px" @closing="bannerClosing"></Banner>
       <div class="d-flex position-relative">
         <b-tooltip
           ref="unameToolTipShow"
@@ -52,28 +47,16 @@
         <span class="tb mx-auto"></span>
       </div>
       <div class="d-flex mt-5">
-        <Slider
-          v-model="remember"
-          class="mx-auto"
-        >
-          Stay logged in (30 days)
-        </Slider>
+        <Slider v-model="remember" class="mx-auto">Stay logged in (30 days)</Slider>
       </div>
       <div class="d-flex mt-5">
-        <button
-          class="btn-bubble mx-auto"
-          @click="login"
-        >
-          {{ register ? 'REGISTER' : 'LOGIN' }}
-        </button>
+        <button class="btn-bubble mx-auto" @click="login">{{ register ? 'REGISTER' : 'LOGIN' }}</button>
       </div>
       <div class="d-flex mt-5">
         <router-link
           class="text-center mx-auto forgot-password"
           to="/passwordReset"
-        >
-          Forgot password?
-        </router-link>
+        >Forgot password?</router-link>
       </div>
     </div>
   </div>
@@ -117,6 +100,13 @@ export default {
         true
       );
     }
+
+    Rest.getMe()
+      .then(() => {
+        this.$store.commit('setLoggedIn', true);
+        this.$router.push('/');
+      })
+      .catch(() => {});
   },
 
   methods: {
@@ -219,7 +209,7 @@ export default {
             window.localStorage.setItem('reginfo-dismissed', '1');
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             switch (err.code) {
               case 401:
                 this.$refs.banner.show(

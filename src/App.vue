@@ -1,12 +1,16 @@
+<!-- @format -->
+
 <template>
   <div id="app">
     <CookieInfo />
-    <Header v-if="loggedIn" />
-    <router-view :class="{ m : loggedIn }"></router-view>
+    <Header v-if="$store.state.loggedIn" />
+    <router-view :class="{ m: $store.state.loggedIn }"></router-view>
     <InfoBubble ref="betawarn" color="red" @hides="onBetaWarnHides" style="z-index: 110;">
       <p class="text-center m-2">
-        <b>ATTENTION:</b>&nbsp;This instance is running on a non-release canary build which is not fully tested yet!
-        <br />Actions taken here may lead to loss or corruption of data!
+        <b>ATTENTION:</b>&nbsp;This instance is running on a non-release canary
+        build which is not fully tested yet!
+        <br />Actions taken here may lead
+        to loss or corruption of data!
       </p>
     </InfoBubble>
     <Footer />
@@ -28,8 +32,15 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import CookieInfo from './components/CookieInfo';
 import InfoBubble from './components/InfoBubble';
+import Vuex from 'vuex';
 
-const NO_LOGIN_ROUTES = ['Share', 'MailConfirm', 'PasswordReset'];
+const NO_LOGIN_ROUTES = [
+  'Share',
+  'MailConfirm',
+  'PasswordReset',
+  'Contact',
+  'About',
+];
 
 export default {
   name: 'app',
@@ -42,12 +53,6 @@ export default {
   },
 
   router: Router,
-
-  data: function() {
-    return {
-      loggedIn: false,
-    };
-  },
 
   created: function() {
     this.checkLogin();
@@ -66,7 +71,7 @@ export default {
     });
 
     EventBus.$on('logout', () => {
-      this.loggedIn = false;
+      this.$store.commit('setLoggedIn', false);
     });
   },
 
@@ -74,9 +79,10 @@ export default {
     checkLogin() {
       Rest.getMe()
         .then((res) => {
-          this.loggedIn = true;
+          this.$store.commit('setLoggedIn', true);
         })
         .catch((err) => {
+          this.$store.commit('setLoggedIn', false);
           if (!NO_LOGIN_ROUTES.includes(this.$route.name)) {
             this.$router.replace('/login');
           }

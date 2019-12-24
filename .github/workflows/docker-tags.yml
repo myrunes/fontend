@@ -1,0 +1,29 @@
+name: Docker CD Tag
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+    tags:
+      - '*'
+
+jobs:
+
+  build_docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Build Docker Image
+        run: |
+          docker build . \
+            -t myrunes/frontend:${GITHUB_REF} \
+            --build-arg RELEASE=FALSE
+
+      - name: Publish Image
+        run: |
+          docker login -u zekro -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push myrunes/frontend:${GITHUB_REF}

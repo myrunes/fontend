@@ -10,6 +10,8 @@ import Settings from '../routes/Settings';
 import Share from '../routes/Share';
 import MailConfirm from '../routes/MailConfirm';
 import PasswordReset from '../routes/PasswordReset';
+import About from '../routes/About';
+import Contact from '../routes/Contact';
 
 export default new Router({
   mode: 'history',
@@ -54,6 +56,16 @@ export default new Router({
       path: '/settings',
       name: 'Settings',
       component: Settings,
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About,
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+      component: Contact,
     },
     {
       path: '/p/:ident',

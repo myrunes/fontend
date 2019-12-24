@@ -8,12 +8,8 @@
         href="https://github.com/myrunes/myrunes/blob/master/docs/imprint.txt"
       >IMPRINT</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;
-      <a
-        href="https://github.com/myrunes/myrunes/blob/master/docs/cookie-usage.md"
-      >COOKIE USAGE</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      <a href="https://github.com/myrunes/myrunes">GITHUB REPOSITORY</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp; CONTACT: contact[at]myrunes.com
+      <router-link to="/contact">CONTACT</router-link>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <router-link to="/about">ABOUT</router-link>
     </p>
   </footer>
 </template>
