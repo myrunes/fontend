@@ -2,14 +2,8 @@
 
 <template>
   <div>
-    <Banner
-      ref="banner"
-      class="mb-3"
-    ></Banner>
-    <InfoBubble
-      ref="mailInfo"
-      color="orange"
-    >
+    <Banner ref="banner" class="mb-3"></Banner>
+    <InfoBubble ref="mailInfo" color="orange">
       <p>Mail Address changed. Please confirm your Mail Address by following the link in the confirmation mail we have sent to you.</p>
       <p>Please also check your spam folder for the mail.</p>
     </InfoBubble>
@@ -20,37 +14,25 @@
       <table>
         <tbody>
           <tr>
-            <td class="pr-5">
-              Created
-            </td>
+            <td class="pr-5">Created</td>
             <td>{{ formatTime(user.created) }}</td>
           </tr>
           <tr>
-            <td class="pr-5">
-              Last Login
-            </td>
+            <td class="pr-5">Last Login</td>
             <td>{{ formatTime(user.lastlogin) }}</td>
           </tr>
           <tr>
-            <td class="pr-5">
-              Pages
-            </td>
+            <td class="pr-5">Pages</td>
             <td>{{ pages }}</td>
           </tr>
           <tr>
-            <td class="pr-5">
-              UID
-            </td>
-            <td class="hider">
-              {{ user.uid }}
-            </td>
+            <td class="pr-5">UID</td>
+            <td class="hider">{{ user.uid }}</td>
           </tr>
         </tbody>
       </table>
 
-      <h3 class="mt-3">
-        LOGIN SESSIONS
-      </h3>
+      <h3 class="mt-3">LOGIN SESSIONS</h3>
       <table>
         <tbody>
           <tr>
@@ -66,17 +48,13 @@
             :class="{highlight: s.sessionid === currsessionid}"
           >
             <td>
-              <p class="hider">
-                {{ s.sessionid }}
-              </p>
+              <p class="hider">{{ s.sessionid }}</p>
             </td>
             <td>{{ s.key }}</td>
             <td>{{ formatTime(s.lastaccess) }}</td>
             <td>{{ formatTime(s.expires) }}</td>
             <td>
-              <p class="hider">
-                {{ s.lastaccessip }}
-              </p>
+              <p class="hider">{{ s.lastaccessip }}</p>
             </td>
             <td>
               <div
@@ -101,37 +79,16 @@
         <br />
         <b>Keep this key secure! It gives full access on your account!</b>
       </p>
-      <div
-        v-if="apitoken"
-        class
-      >
-        <p class="hider w-fit-content">
-          {{ apitoken }}
-        </p>
+      <div v-if="apitoken" class>
+        <p class="hider w-fit-content">{{ apitoken }}</p>
         <i class="created">Created: {{ formatTime(apitokencreated) }}</i>
       </div>
       <div v-else>
         <i class="text-embed">No API token generated.</i>
       </div>
-      <button
-        class="btn-slide mt-3 mr-3"
-        @click="generateAPIToken"
-      >
-        GENERATE TOKEN
-      </button>
-      <button
-        class="btn-slide mt-3 mr-3"
-        @click="deleteAPIToken"
-      >
-        DELETE TOKEN
-      </button>
-      <button
-        v-if="apitoken"
-        class="btn-slide mt-3"
-        @click="copyTokenToClipboard"
-      >
-        COPY TO CLIPBOARD
-      </button>
+      <button class="btn-slide mt-3 mr-3" @click="generateAPIToken">GENERATE TOKEN</button>
+      <button class="btn-slide mt-3 mr-3" @click="deleteAPIToken">DELETE TOKEN</button>
+      <button v-if="apitoken" class="btn-slide mt-3" @click="copyTokenToClipboard">COPY TO CLIPBOARD</button>
     </div>
 
     <!-- DATA STORAGE -->
@@ -152,19 +109,12 @@
           target="_blank"
         >Here</a> you can read about what particular data is saved in the local storage by MYRUNES.
       </p>
-      <button
-        class="btn-slide btn-delete mt-2"
-        @click="deleteLocalStorage"
-      >
-        DELETE LOCAL STORAGE
-      </button>
+      <button class="btn-slide btn-delete mt-2" @click="deleteLocalStorage">DELETE LOCAL STORAGE</button>
     </div>
 
     <!-- UPDATE ACCOUNT -->
     <div class="bg">
-      <h3 class="mb-3">
-        UPDATE ACCOUNT
-      </h3>
+      <h3 class="mb-3">UPDATE ACCOUNT</h3>
 
       <div class="position-relative mb-4">
         <h5>Username</h5>
@@ -173,25 +123,14 @@
           <br />The username must be lowercase, longer than 3 characters and
           must only contain letters, numbers, scores and underscores.
         </p>
-        <input
-          v-model="user.username"
-          type="text"
-          class="tb text-left"
-          @input="unameInput"
-        />
+        <input v-model="user.username" type="text" class="tb text-left" @input="unameInput" />
         <span class="tb" />
       </div>
 
       <div class="position-relative mb-4">
         <h5>Display Name</h5>
-        <p class="explainer">
-          The name which may be displayed to other users.
-        </p>
-        <input
-          v-model="user.displayname"
-          type="text"
-          class="tb text-left"
-        />
+        <p class="explainer">The name which may be displayed to other users.</p>
+        <input v-model="user.displayname" type="text" class="tb text-left" />
         <span class="tb" />
       </div>
 
@@ -199,39 +138,22 @@
         <h5>Mail Address</h5>
         <p
           class="explainer"
-        >
-          Your E-Mail Address, which can be contacted if you forgot your account password.
-        </p>
-        <input
-          v-model="user.mailaddress"
-          type="text"
-          class="tb text-left"
-        />
+        >Your E-Mail Address, which can be contacted if you forgot your account password.</p>
+        <input v-model="user.mailaddress" type="text" class="tb text-left" />
         <span class="tb" />
       </div>
 
       <div class="position-relative">
         <h5>New Password</h5>
-        <p class="explainer">
-          Enter a new password, if you want to change it.
-        </p>
-        <input
-          ref="tbNewpw"
-          v-model="newpassword"
-          type="password"
-          class="tb text-left"
-        />
+        <p class="explainer">Enter a new password, if you want to change it.</p>
+        <input ref="tbNewpw" v-model="newpassword" type="password" class="tb text-left" />
         <span class="tb" />
         <a
           class="ml-2"
           @mousedown="$refs.tbNewpw.type = 'text'"
           @mouseup="$refs.tbNewpw.type = 'password'"
         >
-          <img
-            src="/assets/eye.svg"
-            width="20"
-            height="20"
-          />
+          <img src="/assets/eye.svg" width="20" height="20" />
         </a>
       </div>
 
@@ -239,37 +161,19 @@
         <hr />
         <p>You need to enter your current password again to apply these changes:</p>
         <div class="position-relative mb-4">
-          <input
-            v-model="currpassword"
-            type="password"
-            class="tb text-left"
-          />
+          <input v-model="currpassword" type="password" class="tb text-left" />
           <span class="tb" />
         </div>
         <div class="bg danger-zone mb-3">
-          <h5 class="mb-3">
-            DANGER ZONE
-          </h5>
+          <h5 class="mb-3">DANGER ZONE</h5>
           <button
             class="btn-slide btn-delete"
             @click="deleteAcc"
-          >
-            DELETE ACCOUNT PERMANENTLY AND FOREVER
-          </button>
+          >DELETE ACCOUNT PERMANENTLY AND FOREVER</button>
         </div>
         <div class="text-right">
-          <button
-            class="btn-slide btn-save mr-3"
-            @click="save"
-          >
-            SAVE
-          </button>
-          <button
-            class="btn-slide btn-cancel"
-            @click="$router.back()"
-          >
-            CANCEL
-          </button>
+          <button class="btn-slide btn-save mr-3" @click="save">SAVE</button>
+          <button class="btn-slide btn-cancel" @click="$router.back()">CANCEL</button>
         </div>
       </div>
     </div>
@@ -314,7 +218,6 @@ export default {
         if (!res.body) return;
         this.user = res.body;
         this.originMailAddress = this.user.mailaddress;
-        console.log(this.user);
       })
       .catch(console.error);
 

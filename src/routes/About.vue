@@ -1,5 +1,5 @@
 <template>
-  <div class="mw-container">
+  <div class="mw-container" :style="{ padding: $store.state.loggedIn === false ? '50px' : '0px' }">
     <div class="logo mb-4"></div>
     <p>Copyright © {{ new Date().getFullYear() }} MYRUNES</p>
     <table class="mb-3">

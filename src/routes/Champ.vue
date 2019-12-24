@@ -195,7 +195,6 @@ export default {
     onUpdate(e) {
       this.sortBy = 'custom';
       window.localStorage.setItem('sort-pages-by', this.sortBy);
-      console.log(this.pages.map((p) => p.uid));
       Rest.setPageOrder(this.pages.map((p) => p.uid), this.champ);
     },
 
