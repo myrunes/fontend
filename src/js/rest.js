@@ -129,20 +129,6 @@ function deleteUser(currpassword) {
   });
 }
 
-function getSessions() {
-  return _req({
-    url: `${HOST}/sessions`,
-    method: 'GET',
-  });
-}
-
-function deleteSession(sessionid) {
-  return _req({
-    url: `${HOST}/sessions/${sessionid}`,
-    method: 'DELETE',
-  });
-}
-
 function getFavorites() {
   return _req({
     url: `${HOST}/favorites`,
@@ -299,8 +285,6 @@ export default {
   deletePage,
   updateUser,
   deleteUser,
-  getSessions,
-  deleteSession,
   getFavorites,
   setFavorites,
   getShare,
