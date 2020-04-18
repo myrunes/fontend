@@ -32,41 +32,14 @@
         </tbody>
       </table>
 
-      <h3 class="mt-3">LOGIN SESSIONS</h3>
-      <table>
-        <tbody>
-          <tr>
-            <th>ID</th>
-            <th>Key</th>
-            <th>Last Access</th>
-            <th>Expires</th>
-            <th>Last Access Address</th>
-          </tr>
-          <tr
-            v-for="s in sessions"
-            :key="`session-${s.sessionid}`"
-            :class="{highlight: s.sessionid === currsessionid}"
-          >
-            <td>
-              <p class="hider">{{ s.sessionid }}</p>
-            </td>
-            <td>{{ s.key }}</td>
-            <td>{{ formatTime(s.lastaccess) }}</td>
-            <td>{{ formatTime(s.expires) }}</td>
-            <td>
-              <p class="hider">{{ s.lastaccessip }}</p>
-            </td>
-            <td>
-              <div
-                v-b-tooltip.hover
-                class="btn-del"
-                title="Deleting a session will automatically deny access to the device using this session."
-                @click="delSession(s.sessionid)"
-              ></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <p class="mt-4">
+        Sessions overview is gone? Read
+        <a
+          class="link"
+          href="https://github.com/myrunes/backend/issues/14"
+          target="_blank"
+        >this</a> for further informations why sessions were removed from here.
+      </p>
     </div>
 
     <!-- API ACESS -->
@@ -200,7 +173,6 @@ export default {
   data: function() {
     return {
       user: {},
-      sessions: [],
       currsessionid: '',
       pages: 0,
       newpassword: '',
@@ -225,14 +197,6 @@ export default {
       .then((res) => {
         if (!res.body) return;
         this.pages = res.body.n;
-      })
-      .catch(console.error);
-
-    Rest.getSessions()
-      .then((res) => {
-        if (!res.body.data) return;
-        this.sessions = res.body.data;
-        this.currsessionid = res.body.currentlyconnectedid;
       })
       .catch(console.error);
 
@@ -341,16 +305,6 @@ export default {
           window.scrollTo(0, 0);
           console.error(err);
         });
-    },
-
-    delSession(sessionid) {
-      Rest.deleteSession(sessionid)
-        .then(() => {
-          let i = this.sessions.findIndex((s) => s.sessionid == sessionid);
-          if (i < 0) return;
-          this.sessions.splice(i, 1);
-        })
-        .catch(console.error);
     },
 
     deleteLocalStorage() {
