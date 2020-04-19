@@ -83,6 +83,7 @@ const SHORTS = {
   lb: 'leblanc',
   tf: 'twisted-fate',
   gp: 'gankplank',
+  peach: 'kaisa',
 };
 
 export default {

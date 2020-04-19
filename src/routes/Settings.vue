@@ -71,13 +71,13 @@
       <p class="explainer">
         We store some client-side data directly in the browser using
         <a
-          class="underlined"
+          class="link"
           href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
           target="_blank"
         >local storage</a>.
         <br />
         <a
-          class="underlined"
+          class="link"
           href="https://github.com/myrunes/backend/blob/master/docs/cookie-usage.md"
           target="_blank"
         >Here</a> you can read about what particular data is saved in the local storage by MYRUNES.
@@ -86,8 +86,16 @@
     </div>
 
     <!-- UPDATE ACCOUNT -->
-    <div class="bg">
+    <div class="bg" id="update-acc-container">
       <h3 class="mb-3">UPDATE ACCOUNT</h3>
+
+      <div class="bg highlight-zone mb-4" :class="{'highlight': highlightCurrPass}">
+        <p>You need to enter your current password again to apply these changes:</p>
+        <div class="position-relative">
+          <input v-model="currpassword" type="password" class="tb text-left" />
+          <span class="tb" />
+        </div>
+      </div>
 
       <div class="position-relative mb-4">
         <h5>Username</h5>
@@ -130,13 +138,7 @@
         </a>
       </div>
 
-      <div class="mt-5">
-        <hr />
-        <p>You need to enter your current password again to apply these changes:</p>
-        <div class="position-relative mb-4">
-          <input v-model="currpassword" type="password" class="tb text-left" />
-          <span class="tb" />
-        </div>
+      <div class="mt-4">
         <div class="bg danger-zone mb-3">
           <h5 class="mb-3">DANGER ZONE</h5>
           <button
@@ -178,6 +180,8 @@ export default {
       newpassword: '',
       currpassword: '',
       originMailAddress: '',
+
+      highlightCurrPass: false,
 
       apitoken: null,
       apitokencreated: null,
@@ -225,7 +229,13 @@ export default {
     },
 
     save() {
-      let currpw = this.currpassword;
+      const currpw = this.currpassword;
+
+      if (!currpw) {
+        this.highlightCurrPassword();
+        return;
+      }
+
       this.currpassword = '';
 
       if (this.newpassword && this.newpassword.length < 8) {
@@ -286,6 +296,12 @@ export default {
 
     deleteAcc() {
       let currpw = this.currpassword;
+
+      if (!currpw) {
+        this.highlightCurrPassword();
+        return;
+      }
+
       this.currpassword = '';
 
       Rest.deleteUser(currpw)
@@ -355,12 +371,32 @@ export default {
           )
         );
     },
+
+    highlightCurrPassword() {
+      const container = this.$el
+        .querySelector('#update-acc-container')
+        .scrollIntoView();
+      setTimeout(() => (this.highlightCurrPass = true), 250);
+      setTimeout(() => (this.highlightCurrPass = false), 250 + 1000);
+    },
   },
 };
 </script>
 
 <style scoped>
 /** @format */
+
+@keyframes hightlight-box-bg {
+  0% {
+    background-color: #34525f;
+  }
+  50% {
+    background-color: #477081;
+  }
+  100% {
+    background-color: #34525f;
+  }
+}
 
 .hider {
   color: rgb(33, 33, 33) !important;
@@ -417,6 +453,15 @@ th {
   background-color: rgba(198, 40, 40, 0.3);
   width: fit-content;
   height: fit-content;
+}
+
+.highlight-zone {
+  background-color: #34525f;
+  width: fit-content;
+}
+
+.highlight-zone.highlight {
+  animation: hightlight-box-bg 1s ease;
 }
 
 .btn-delete {
