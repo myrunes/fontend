@@ -1,5 +1,39 @@
 /** @format */
 
+const CHAMP_SHORTS = {
+  mf: 'miss-fortune',
+  ww: 'warwick',
+  lb: 'leblanc',
+  tf: 'twisted-fate',
+  gp: 'gankplank',
+  peach: 'kaisa',
+};
+
+function champNameFilter(champ, inpt) {
+  inpt = inpt
+    .toLowerCase()
+    .replace(' ', '')
+    .replace("'", '')
+    .replace('.', '');
+
+  return CHAMP_SHORTS[inpt] === champ || champ.includes(inpt);
+}
+
+function champObjectFilter(champ, inpt) {
+  const name = champ.name.toLowerCase();
+  const nameStripped = champ.uid.replace('-', ' ');
+  const nameConcat = champ.uid.replace('-', '');
+
+  inpt = inpt.toLowerCase();
+
+  return (
+    name.includes(inpt) ||
+    nameStripped.includes(inpt) ||
+    nameConcat.includes(inpt) ||
+    CHAMP_SHORTS[inpt] === champ.uid
+  );
+}
+
 function parseTime(date) {
   function btf(inp) {
     if (inp < 10) return '0' + inp;
@@ -76,6 +110,8 @@ function getEnv() {
 // ----------------------------------
 
 export default {
+  champObjectFilter,
+  champNameFilter,
   parseTime,
   getCookies,
   getCookieValue,
