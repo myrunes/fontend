@@ -304,6 +304,11 @@ export default {
 
       this.currpassword = '';
 
+      const confMsg = `Do you really want to delete the account "${this.user.username}" permanently? THIS ACTION CAN NOT BE UNDONE!`;
+      if (!confirm(confMsg)) {
+        return;
+      }
+
       Rest.deleteUser(currpw)
         .then(() => {
           EventBus.$emit('logout');
