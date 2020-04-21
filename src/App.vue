@@ -21,9 +21,9 @@
           class="main-link"
         >
           changed the password hashing
-          algorithm to argon2
-        </a>.
-        <br />Pelease, go to your
+          algorithm to argon2.
+        </a>
+        <br />Please, go to your
         <router-link to="/settings" class="main-link">settings</router-link>&nbsp;and change your password
         in order to switch to the new algorithm.
         <br />
