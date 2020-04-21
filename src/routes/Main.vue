@@ -288,8 +288,8 @@ a:hover {
 }
 
 .favorites-hint > img {
-  width: 85px;
-  height: 85px;
+  width: 85px !important;
+  max-height: 85px !important;
   border: dashed 3px white;
   padding: 15px;
   margin-right: 30px;
