@@ -3,7 +3,7 @@
 <template>
   <footer>
     <p>
-      © 2019 MYRUNES [{{ version }}] &nbsp;&nbsp;|&nbsp;&nbsp;
+      © {{new Date().getFullYear()}} MYRUNES [{{ version }}] &nbsp;&nbsp;|&nbsp;&nbsp;
       <a
         href="https://github.com/myrunes/backend/blob/master/docs/imprint.txt"
       >IMPRINT</a>

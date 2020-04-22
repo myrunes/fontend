@@ -32,41 +32,14 @@
         </tbody>
       </table>
 
-      <h3 class="mt-3">LOGIN SESSIONS</h3>
-      <table>
-        <tbody>
-          <tr>
-            <th>ID</th>
-            <th>Key</th>
-            <th>Last Access</th>
-            <th>Expires</th>
-            <th>Last Access Address</th>
-          </tr>
-          <tr
-            v-for="s in sessions"
-            :key="`session-${s.sessionid}`"
-            :class="{highlight: s.sessionid === currsessionid}"
-          >
-            <td>
-              <p class="hider">{{ s.sessionid }}</p>
-            </td>
-            <td>{{ s.key }}</td>
-            <td>{{ formatTime(s.lastaccess) }}</td>
-            <td>{{ formatTime(s.expires) }}</td>
-            <td>
-              <p class="hider">{{ s.lastaccessip }}</p>
-            </td>
-            <td>
-              <div
-                v-b-tooltip.hover
-                class="btn-del"
-                title="Deleting a session will automatically deny access to the device using this session."
-                @click="delSession(s.sessionid)"
-              ></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <p class="mt-4">
+        Sessions overview is gone? Read
+        <a
+          class="link"
+          href="https://github.com/myrunes/backend/issues/14"
+          target="_blank"
+        >this</a> for further informations why sessions were removed from here.
+      </p>
     </div>
 
     <!-- API ACESS -->
@@ -98,13 +71,13 @@
       <p class="explainer">
         We store some client-side data directly in the browser using
         <a
-          class="underlined"
+          class="link"
           href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
           target="_blank"
         >local storage</a>.
         <br />
         <a
-          class="underlined"
+          class="link"
           href="https://github.com/myrunes/backend/blob/master/docs/cookie-usage.md"
           target="_blank"
         >Here</a> you can read about what particular data is saved in the local storage by MYRUNES.
@@ -113,8 +86,16 @@
     </div>
 
     <!-- UPDATE ACCOUNT -->
-    <div class="bg">
+    <div class="bg" id="update-acc-container">
       <h3 class="mb-3">UPDATE ACCOUNT</h3>
+
+      <div class="bg highlight-zone mb-4" :class="{'highlight': highlightCurrPass}">
+        <p>You need to enter your current password again to apply these changes:</p>
+        <div class="position-relative">
+          <input v-model="currpassword" type="password" class="tb text-left" />
+          <span class="tb" />
+        </div>
+      </div>
 
       <div class="position-relative mb-4">
         <h5>Username</h5>
@@ -157,13 +138,7 @@
         </a>
       </div>
 
-      <div class="mt-5">
-        <hr />
-        <p>You need to enter your current password again to apply these changes:</p>
-        <div class="position-relative mb-4">
-          <input v-model="currpassword" type="password" class="tb text-left" />
-          <span class="tb" />
-        </div>
+      <div class="mt-4">
         <div class="bg danger-zone mb-3">
           <h5 class="mb-3">DANGER ZONE</h5>
           <button
@@ -200,12 +175,13 @@ export default {
   data: function() {
     return {
       user: {},
-      sessions: [],
       currsessionid: '',
       pages: 0,
       newpassword: '',
       currpassword: '',
       originMailAddress: '',
+
+      highlightCurrPass: false,
 
       apitoken: null,
       apitokencreated: null,
@@ -225,14 +201,6 @@ export default {
       .then((res) => {
         if (!res.body) return;
         this.pages = res.body.n;
-      })
-      .catch(console.error);
-
-    Rest.getSessions()
-      .then((res) => {
-        if (!res.body.data) return;
-        this.sessions = res.body.data;
-        this.currsessionid = res.body.currentlyconnectedid;
       })
       .catch(console.error);
 
@@ -261,7 +229,13 @@ export default {
     },
 
     save() {
-      let currpw = this.currpassword;
+      const currpw = this.currpassword;
+
+      if (!currpw) {
+        this.highlightCurrPassword();
+        return;
+      }
+
       this.currpassword = '';
 
       if (this.newpassword && this.newpassword.length < 8) {
@@ -322,7 +296,18 @@ export default {
 
     deleteAcc() {
       let currpw = this.currpassword;
+
+      if (!currpw) {
+        this.highlightCurrPassword();
+        return;
+      }
+
       this.currpassword = '';
+
+      const confMsg = `Do you really want to delete the account "${this.user.username}" permanently? THIS ACTION CAN NOT BE UNDONE!`;
+      if (!confirm(confMsg)) {
+        return;
+      }
 
       Rest.deleteUser(currpw)
         .then(() => {
@@ -341,16 +326,6 @@ export default {
           window.scrollTo(0, 0);
           console.error(err);
         });
-    },
-
-    delSession(sessionid) {
-      Rest.deleteSession(sessionid)
-        .then(() => {
-          let i = this.sessions.findIndex((s) => s.sessionid == sessionid);
-          if (i < 0) return;
-          this.sessions.splice(i, 1);
-        })
-        .catch(console.error);
     },
 
     deleteLocalStorage() {
@@ -401,12 +376,32 @@ export default {
           )
         );
     },
+
+    highlightCurrPassword() {
+      const container = this.$el
+        .querySelector('#update-acc-container')
+        .scrollIntoView();
+      setTimeout(() => (this.highlightCurrPass = true), 250);
+      setTimeout(() => (this.highlightCurrPass = false), 250 + 1000);
+    },
   },
 };
 </script>
 
 <style scoped>
 /** @format */
+
+@keyframes hightlight-box-bg {
+  0% {
+    background-color: #34525f;
+  }
+  50% {
+    background-color: #477081;
+  }
+  100% {
+    background-color: #34525f;
+  }
+}
 
 .hider {
   color: rgb(33, 33, 33) !important;
@@ -463,6 +458,15 @@ th {
   background-color: rgba(198, 40, 40, 0.3);
   width: fit-content;
   height: fit-content;
+}
+
+.highlight-zone {
+  background-color: #34525f;
+  width: fit-content;
+}
+
+.highlight-zone.highlight {
+  animation: hightlight-box-bg 1s ease;
 }
 
 .btn-delete {

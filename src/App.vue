@@ -5,6 +5,32 @@
     <CookieInfo />
     <Header v-if="$store.state.loggedIn" />
     <router-view :class="{ m: $store.state.loggedIn }"></router-view>
+
+    <!-- INFO OLD PASSWORD -->
+    <InfoBubble
+      ref="passwordwarn"
+      color="orange"
+      @hides="onPasswordWarnHides"
+      style="z-index: 110;"
+    >
+      <p class="text-center m-2">
+        <b>ATTENTION:</b>&nbsp;In the last update, myrunes has
+        <a
+          href="https://github.com/myrunes/backend/issues/16"
+          target="_blank"
+          class="main-link"
+        >
+          changed the password hashing
+          algorithm to argon2.
+        </a>
+        <br />Please, go to your
+        <router-link to="/settings" class="main-link">settings</router-link>&nbsp;and change your password
+        in order to switch to the new algorithm.
+        <br />
+      </p>
+    </InfoBubble>
+
+    <!-- INFO BETA WARN -->
     <InfoBubble ref="betawarn" color="red" @hides="onBetaWarnHides" style="z-index: 110;">
       <p class="text-center m-2">
         <b>ATTENTION:</b>&nbsp;This instance is running on a non-release canary
@@ -13,6 +39,7 @@
         to loss or corruption of data!
       </p>
     </InfoBubble>
+
     <Footer />
   </div>
 </template>
@@ -80,6 +107,13 @@ export default {
       Rest.getMe()
         .then((res) => {
           this.$store.commit('setLoggedIn', true);
+          if (
+            res.body &&
+            res.body.hasoldpw &&
+            window.localStorage.getItem('password-info-accepted') !== '1'
+          ) {
+            setTimeout(() => this.$refs.passwordwarn.show(), 1000);
+          }
         })
         .catch((err) => {
           this.$store.commit('setLoggedIn', false);
@@ -91,6 +125,10 @@ export default {
 
     onBetaWarnHides() {
       window.localStorage.setItem('beta-info-accepted', '1');
+    },
+
+    onPasswordWarnHides() {
+      window.localStorage.setItem('password-info-accepted', '1');
     },
   },
 };
@@ -107,5 +145,9 @@ export default {
 
 .m {
   margin: 70px 20px;
+}
+
+.main-link {
+  text-decoration: underline;
 }
 </style>

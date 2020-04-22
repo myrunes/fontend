@@ -76,14 +76,7 @@
 import EventBus from '../js/eventbus';
 import Rest from '../js/rest';
 import Page from '../components/Page';
-
-const SHORTS = {
-  mf: 'miss-fortune',
-  ww: 'warwick',
-  lb: 'leblanc',
-  tf: 'twisted-fate',
-  gp: 'gankplank',
-};
+import Utils from '../js/utils';
 
 export default {
   name: 'Main',
@@ -172,18 +165,7 @@ export default {
     },
 
     searchFilter(c, val) {
-      const name = c.name.toLowerCase();
-      const nameStripped = c.uid.replace('-', ' ');
-      const nameConcat = c.uid.replace('-', '');
-
-      val = val.toLowerCase();
-
-      return (
-        name.includes(val) ||
-        nameStripped.includes(val) ||
-        nameConcat.includes(val) ||
-        SHORTS[val] === c.uid
-      );
+      return Utils.champObjectFilter(c, val);
     },
 
     openChamp(champ) {
@@ -306,8 +288,8 @@ a:hover {
 }
 
 .favorites-hint > img {
-  width: 85px;
-  height: 85px;
+  width: 85px !important;
+  max-height: 85px !important;
   border: dashed 3px white;
   padding: 15px;
   margin-right: 30px;

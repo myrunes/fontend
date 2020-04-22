@@ -58,7 +58,7 @@ build:
 
 PHONY += run
 run:
-	$(NPM) run serve
+	$(NPM) run serve -- --port 8081
 
 PHONY += prettify
 prettify:

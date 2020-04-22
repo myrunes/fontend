@@ -183,7 +183,7 @@ export default {
       this.pagesVisible = this.pages.filter((p) => {
         return (
           p.title.toLowerCase().includes(txt) ||
-          p.champions.find((c) => c.includes(txt))
+          p.champions.find((c) => Utils.champNameFilter(c, txt))
         );
       });
     },
