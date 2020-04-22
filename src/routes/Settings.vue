@@ -258,11 +258,11 @@ export default {
 
       if (this.user.mailaddress !== this.originMailAddress) {
         if (!this.user.mailaddress) {
-          Rest.setMailAddress('', true)
+          Rest.setMailAddress('', true, currpw)
             .then(() => {})
             .catch(console.error);
         } else {
-          Rest.setMailAddress(this.user.mailaddress)
+          Rest.setMailAddress(this.user.mailaddress, false, currpw)
             .then(() => {
               this.$refs.mailInfo.show();
             })
