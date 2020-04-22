@@ -211,7 +211,7 @@ function setPageOrder(pageorder, champion) {
   });
 }
 
-function setMailAddress(mailaddress, reset) {
+function setMailAddress(mailaddress, reset, currpassword) {
   if (reset === undefined || reset === null) {
     reset = false;
   }
@@ -219,7 +219,7 @@ function setMailAddress(mailaddress, reset) {
   return _req({
     url: `${HOST}/users/me/mail`,
     method: 'POST',
-    json: { mailaddress, reset },
+    json: { mailaddress, reset, currpassword },
   });
 }
 
