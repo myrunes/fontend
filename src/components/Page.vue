@@ -112,7 +112,7 @@ export default {
     copyPage() {
       const page = {
         title: `${this.title} (copy)`,
-        champs: this.champs,
+        champions: this.champs,
         primary: {
           tree: this.primary,
           rows: this.prows,
