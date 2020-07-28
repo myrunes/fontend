@@ -15,18 +15,17 @@
       </div>
     </div>
     <div v-if="displayDelete">
-      <button class="btn-slide btn-delete" @click="deletePage">
-        {{ suredel ? 'SURE?' : 'DELETE' }}
-      </button>
+      <button
+        class="btn-slide btn-delete w-100"
+        @click="deletePage"
+      >{{ suredel ? 'SURE?' : 'DELETE' }}</button>
+    </div>
+    <div v-if="displayDelete">
+      <button class="btn-slide w-100" @click="copyPage">COPY</button>
     </div>
     <div class="runes-container">
       <div class="runes" :class="`tree-${primary}`">
-        <img
-          :src="`/assets/rune-avis/${primary}.png`"
-          class="mr-3"
-          width="50"
-          height="50"
-        />
+        <img :src="`/assets/rune-avis/${primary}.png`" class="mr-3" width="50" height="50" />
         <img
           v-for="r in prows"
           :key="r"
@@ -36,12 +35,7 @@
         />
       </div>
       <div class="runes" :class="`tree-${secondary}`">
-        <img
-          :src="`/assets/rune-avis/${secondary}.png`"
-          class="mr-3"
-          width="50"
-          height="50"
-        />
+        <img :src="`/assets/rune-avis/${secondary}.png`" class="mr-3" width="50" height="50" />
         <img
           v-for="r in srows"
           :key="r"
@@ -88,7 +82,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     return {
       suredel: false,
     };
@@ -113,6 +107,29 @@ export default {
           this.suredel = false;
         }, 2500);
       }
+    },
+
+    copyPage() {
+      const page = {
+        title: `${this.title} (copy)`,
+        champs: this.champs,
+        primary: {
+          tree: this.primary,
+          rows: this.prows,
+        },
+        secondary: {
+          tree: this.secondary,
+          rows: this.srows,
+        },
+        perks: {
+          rows: this.perks,
+        },
+      };
+      Rest.createPage(page)
+        .then((res) =>
+          this.$router.push({ name: 'RunePage', params: { uid: res.body.uid } })
+        )
+        .catch(console.error);
     },
   },
 };

@@ -343,3 +343,7 @@ span.tb {
   text-decoration: underline;
   color: aqua !important;
 }
+
+.w-100 {
+  width: 100%;
+}
