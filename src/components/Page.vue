@@ -8,7 +8,7 @@
         <img
           v-for="c in champs"
           :key="c"
-          :src="`/assets/champ-avis/${c}.png`"
+          :src="`${APIHOST}/assets/champions/avatars/${c}.png`"
           width="25"
           height="25"
         />
@@ -85,6 +85,7 @@ export default {
   data: function () {
     return {
       suredel: false,
+      APIHOST: Rest.HOST,
     };
   },
 

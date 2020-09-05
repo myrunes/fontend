@@ -39,7 +39,7 @@
         :class="{ 'no-pages': !pages[c] }"
         @click="openChamp(c)"
       >
-        <img :src="`/assets/champ-avis/${c}.png`" width="100" height="100" />
+        <img :src="`${APIHOST}/assets/champions/avatars/${c}.png`" width="100" height="100" />
         <p>{{ pages[c] }}</p>
       </a>
     </div>
@@ -85,7 +85,7 @@ export default {
     Page,
   },
 
-  data: function() {
+  data: function () {
     return {
       champs: [],
       displayedChamps: [],
@@ -95,10 +95,12 @@ export default {
       searchedPages: null,
       isSearch: false,
       searchBarOnFocus: false,
+
+      APIHOST: Rest.HOST,
     };
   },
 
-  created: function() {
+  created: function () {
     Rest.getChamps()
       .then((res) => {
         this.champs = res.body.data;
