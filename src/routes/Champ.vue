@@ -23,7 +23,7 @@
     </InfoBubble>
 
     <div v-if="champ" class="champ-header mb-3">
-      <img :src="`/assets/champ-avis/${champ}.png`" width="42" height="42" />
+      <img :src="`${APIHOST}/assets/champions/avatars/${champ}.png`" width="42" height="42" />
       <h2>{{ champData.name.toUpperCase() }}</h2>
     </div>
 
@@ -112,7 +112,7 @@ export default {
     Draggable,
   },
 
-  data: function() {
+  data: function () {
     return {
       champ: null,
       favorite: false,
@@ -128,11 +128,13 @@ export default {
       isDragging: false,
       isSearch: false,
       scrollTimer: null,
+
+      APIHOST: Rest.HOST,
     };
   },
 
   computed: {
-    sortByText: function() {
+    sortByText: function () {
       switch (this.sortBy) {
         case 'created':
           return 'Created Date';
@@ -146,7 +148,7 @@ export default {
     },
   },
 
-  created: function() {
+  created: function () {
     this.sortBy = this.$route.query.sortBy;
 
     if (!this.sortBy) {
@@ -171,7 +173,7 @@ export default {
     }
   },
 
-  destroyed: function() {
+  destroyed: function () {
     Utils.removeWindowListener('keydown', this.onSearchPress);
   },
 
@@ -195,7 +197,10 @@ export default {
     onUpdate(e) {
       this.sortBy = 'custom';
       window.localStorage.setItem('sort-pages-by', this.sortBy);
-      Rest.setPageOrder(this.pages.map((p) => p.uid), this.champ);
+      Rest.setPageOrder(
+        this.pages.map((p) => p.uid),
+        this.champ
+      );
     },
 
     deleted() {

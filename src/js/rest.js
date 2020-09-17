@@ -300,4 +300,6 @@ export default {
   confirmMail,
   resetPassword,
   resetPasswordConfirm,
+
+  HOST,
 };

@@ -1,17 +1,9 @@
 <!-- @format -->
 
 <template>
-  <div
-    class="outer-container"
-    :class="{ 'm-3': !loggedin }"
-  >
-    <div
-      v-if="notfound"
-      class="container-fluid d-flex"
-    >
-      <h1 class="mx-auto mt-5">
-        This is not a shared page.&nbsp;&nbsp;:(
-      </h1>
+  <div class="outer-container" :class="{ 'm-3': !loggedin }">
+    <div v-if="notfound" class="container-fluid d-flex">
+      <h1 class="mx-auto mt-5">This is not a shared page.&nbsp;&nbsp;:(</h1>
     </div>
 
     <div v-else>
@@ -24,15 +16,12 @@
             class="round mr-3"
             height="30"
             width="30"
-            :src="`/assets/champ-avis/${c}.png`"
+            :src="`${APIHOST}/assets/champions/avatars/${c}.png`"
           />
         </div>
       </div>
       <h4>by {{ user.displayname }}</h4>
-      <div
-        class="d-flex mt-4 bg-runes"
-        :class="`tree-${page.primary.tree}`"
-      >
+      <div class="d-flex mt-4 bg-runes" :class="`tree-${page.primary.tree}`">
         <img
           :src="`/assets/rune-avis/${page.primary.tree}.png`"
           width="70"
@@ -48,10 +37,7 @@
           class="mr-2"
         />
       </div>
-      <div
-        class="d-flex mt-4 bg-runes"
-        :class="`tree-${page.secondary.tree}`"
-      >
+      <div class="d-flex mt-4 bg-runes" :class="`tree-${page.secondary.tree}`">
         <img
           :src="`/assets/rune-avis/${page.secondary.tree}.png`"
           width="70"
@@ -80,12 +66,7 @@
       </div>
 
       <div class="ctrl-btns">
-        <button
-          class="btn-slide mr-3 shadow"
-          @click="savePage"
-        >
-          SAVE
-        </button>
+        <button class="btn-slide mr-3 shadow" @click="savePage">SAVE</button>
       </div>
     </div>
   </div>
@@ -104,7 +85,7 @@ export default {
 
   props: {},
 
-  data: function() {
+  data: function () {
     return {
       ident: '',
 
@@ -129,10 +110,12 @@ export default {
       user: {},
 
       loggedin: false,
+
+      APIHOST: Rest.HOST,
     };
   },
 
-  created: function() {
+  created: function () {
     this.ident = this.$route.params.ident;
     Rest.getShare(this.ident)
       .then((res) => {
