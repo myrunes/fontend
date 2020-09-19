@@ -81,7 +81,7 @@ export default {
 
   router: Router,
 
-  created: function() {
+  created: function () {
     this.checkLogin();
 
     Rest.getVersion().then((res) => {
@@ -91,6 +91,10 @@ export default {
       ) {
         setTimeout(() => this.$refs.betawarn.show(), 1000);
       }
+    });
+
+    Rest.getRecapctchaInfo().then((res) => {
+      this.$store.commit('setReCaptchaSiteKey', res.body.sitekey);
     });
 
     EventBus.$on('login', () => {
