@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <div>
+  <div class="viewlimit-width">
     <div
       v-if="isDragging"
       class="hover-detector top"
@@ -23,7 +23,11 @@
     </InfoBubble>
 
     <div v-if="champ" class="champ-header mb-3">
-      <img :src="`${APIHOST}/assets/champions/avatars/${champ}.png`" width="42" height="42" />
+      <img
+        :src="`${APIHOST}/assets/champions/avatars/${champ}.png`"
+        width="42"
+        height="42"
+      />
       <h2>{{ champData.name.toUpperCase() }}</h2>
     </div>
 
@@ -34,18 +38,23 @@
         placeholder="Search for page name"
         @input="onSearchInput"
       />
-      <b-dropdown :text="`Sorted by: ${sortByText}`" class="drop-down" toggle-class="drop-down-btn">
+      <b-dropdown
+        :text="`Sorted by: ${sortByText}`"
+        class="drop-down"
+        toggle-class="drop-down-btn"
+      >
         <b-dropdown-item @click="onSortBy('custom')">Custom</b-dropdown-item>
-        <b-dropdown-item @click="onSortBy('created')">Created Date</b-dropdown-item>
+        <b-dropdown-item @click="onSortBy('created')"
+          >Created Date</b-dropdown-item
+        >
         <b-dropdown-item @click="onSortBy('title')">Title</b-dropdown-item>
       </b-dropdown>
     </div>
 
     <div class="page-container">
-      <h3
-        v-if="pages !== null && pages.length < 1"
-        class="no-pages"
-      >There are no pages belonging to this champion. : (</h3>
+      <h3 v-if="pages !== null && pages.length < 1" class="no-pages">
+        There are no pages belonging to this champion. : (
+      </h3>
 
       <draggable
         :list="pages"
@@ -112,7 +121,7 @@ export default {
     Draggable,
   },
 
-  data: function () {
+  data: function() {
     return {
       champ: null,
       favorite: false,
@@ -134,7 +143,7 @@ export default {
   },
 
   computed: {
-    sortByText: function () {
+    sortByText: function() {
       switch (this.sortBy) {
         case 'created':
           return 'Created Date';
@@ -148,7 +157,7 @@ export default {
     },
   },
 
-  created: function () {
+  created: function() {
     this.sortBy = this.$route.query.sortBy;
 
     if (!this.sortBy) {
@@ -173,7 +182,7 @@ export default {
     }
   },
 
-  destroyed: function () {
+  destroyed: function() {
     Utils.removeWindowListener('keydown', this.onSearchPress);
   },
 

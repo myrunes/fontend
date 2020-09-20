@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <div>
+  <div class="viewlimit-width">
     <div
       v-if="isDragging"
       class="hover-detector top"
@@ -29,18 +29,23 @@
         placeholder="Search for page name or champion"
         @input="onSearchInput"
       />
-      <b-dropdown :text="`Sorted by: ${sortByText}`" class="drop-down" toggle-class="drop-down-btn">
+      <b-dropdown
+        :text="`Sorted by: ${sortByText}`"
+        class="drop-down"
+        toggle-class="drop-down-btn"
+      >
         <b-dropdown-item @click="onSortBy('custom')">Custom</b-dropdown-item>
-        <b-dropdown-item @click="onSortBy('created')">Created Date</b-dropdown-item>
+        <b-dropdown-item @click="onSortBy('created')"
+          >Created Date</b-dropdown-item
+        >
         <b-dropdown-item @click="onSortBy('title')">Title</b-dropdown-item>
       </b-dropdown>
     </div>
 
     <div class="page-container">
-      <h3
-        v-if="pages !== null && pages.length < 1"
-        class="no-pages"
-      >You have not created any pages yet. : (</h3>
+      <h3 v-if="pages !== null && pages.length < 1" class="no-pages">
+        You have not created any pages yet. : (
+      </h3>
 
       <draggable
         :list="pages"
@@ -70,7 +75,9 @@
       <button
         class="btn-slide btn-new"
         @click="$router.push({ name: 'RunePage', params: { uid: 'new' } })"
-      >+</button>
+      >
+        +
+      </button>
     </div>
   </div>
 </template>
