@@ -247,11 +247,11 @@ function resetPassword(mailaddress) {
   });
 }
 
-function resetPasswordConfirm(token, new_password, page_names) {
+function resetPasswordConfirm(token, new_password, recaptcharesponse) {
   return _req({
     url: `${HOST}/users/me/passwordreset/confirm`,
     method: 'POST',
-    json: { token, new_password, page_names },
+    json: { token, new_password, recaptcharesponse },
   });
 }
 
