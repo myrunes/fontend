@@ -1,9 +1,11 @@
 <!-- @format -->
 
 <template>
-  <div>
+  <div class="viewlimit-width">
     <b-modal id="modalShare" title="Share Page" @ok="shareOk">
-      <p v-if="!share.uid">This page has not been shared yet. Create a share link below.</p>
+      <p v-if="!share.uid">
+        This page has not been shared yet. Create a share link below.
+      </p>
       <div v-else>
         <p class="m-0">Share link:</p>
         <p class="bg-ident">{{ `${getWindowLocation()}/p/${share.ident}` }}</p>
@@ -18,16 +20,32 @@
         Number of times the link can be accessed. Set to -1 to set this
         infinite.
       </i>
-      <b-form-input v-model="share.maxaccesses" type="number" min="-1" value="0"></b-form-input>
+      <b-form-input
+        v-model="share.maxaccesses"
+        type="number"
+        min="-1"
+        value="0"
+      ></b-form-input>
 
       <h5 class="mt-4">Expires</h5>
-      <i>Time at which the link will expire. Leave empty to set to never expire.</i>
+      <i
+        >Time at which the link will expire. Leave empty to set to never
+        expire.</i
+      >
       <b-row>
         <b-col>
-          <b-form-input ref="shareDate" v-model="share._expires.date" type="date"></b-form-input>
+          <b-form-input
+            ref="shareDate"
+            v-model="share._expires.date"
+            type="date"
+          ></b-form-input>
         </b-col>
         <b-col>
-          <b-form-input ref="shareTime" v-model="share._expires.time" type="time"></b-form-input>
+          <b-form-input
+            ref="shareTime"
+            v-model="share._expires.time"
+            type="time"
+          ></b-form-input>
         </b-col>
       </b-row>
 
@@ -36,7 +54,8 @@
         variant="danger"
         class="w-100 mt-3 text-white"
         @click="resetShare"
-      >RESET SHARE</b-button>
+        >RESET SHARE</b-button
+      >
     </b-modal>
 
     <Banner ref="banner" class="mb-3"></Banner>
@@ -108,9 +127,9 @@
                 <h5>{{ rune.name }}</h5>
                 <p>
                   {{
-                  formatRuneText(
-                  showFullInfo ? rune.longDesc : rune.shortDesc
-                  )
+                    formatRuneText(
+                      showFullInfo ? rune.longDesc : rune.shortDesc
+                    )
                   }}
                 </p>
               </div>
@@ -146,9 +165,9 @@
                 <h5>{{ rune.name }}</h5>
                 <p>
                   {{
-                  formatRuneText(
-                  showFullInfo ? rune.longDesc : rune.shortDesc
-                  )
+                    formatRuneText(
+                      showFullInfo ? rune.longDesc : rune.shortDesc
+                    )
                   }}
                 </p>
               </div>
@@ -190,11 +209,16 @@
       class="mt-3 ml-1"
       v-model="showFullInfo"
       @input="onFullInfoSliderInput"
-    >Show full rune info</Slider>
+      >Show full rune info</Slider
+    >
 
     <div class="ctrl-btns">
-      <button v-if="created" class="btn-slide mr-3 shadow" @click="shareOpen">SHARE</button>
-      <button class="btn-slide mr-3 btn-cancel shadow" @click="$router.back()">CANCEL</button>
+      <button v-if="created" class="btn-slide mr-3 shadow" @click="shareOpen">
+        SHARE
+      </button>
+      <button class="btn-slide mr-3 btn-cancel shadow" @click="$router.back()">
+        CANCEL
+      </button>
       <button class="btn-slide btn-save shadow" @click="save">SAVE</button>
     </div>
   </div>

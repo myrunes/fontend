@@ -4,7 +4,12 @@
   <div class="outer-container">
     <div class="container my-auto">
       <div class="logo mx-auto"></div>
-      <Banner ref="banner" class="mx-auto mb-5" width="300px" @closing="bannerClosing"></Banner>
+      <Banner
+        ref="banner"
+        class="mx-auto mb-5"
+        width="300px"
+        @closing="bannerClosing"
+      ></Banner>
       <div class="d-flex position-relative">
         <b-tooltip
           ref="unameToolTipShow"
@@ -14,8 +19,7 @@
           :show.sync="unameToolTipShow"
         >
           Username can only contain lower case letters, numbers, minuses (
-          <code>-</code>) and underscores (
-          <code>_</code>). You can later
+          <code>-</code>) and underscores ( <code>_</code>). You can later
           change your username or set a specific display name.
         </b-tooltip>
         <input
@@ -47,16 +51,33 @@
         <span class="tb mx-auto"></span>
       </div>
       <div class="d-flex mt-5">
-        <Slider v-model="remember" class="mx-auto">Stay logged in (30 days)</Slider>
+        <Slider v-model="remember" class="mx-auto"
+          >Stay logged in (30 days)</Slider
+        >
       </div>
-      <div class="d-flex mt-5">
-        <button class="btn-bubble mx-auto" @click="login">{{ register ? 'REGISTER' : 'LOGIN' }}</button>
+      <div class="d-flex mt-5 flex-column">
+        <vue-recaptcha
+          class="mx-auto mb-3"
+          v-if="register && siteKey"
+          :sitekey="siteKey"
+          @verify="recapVerify"
+          @expired="recapUnverify"
+          @error="recapUnverify"
+        ></vue-recaptcha>
+        <button
+          class="btn-bubble mx-auto"
+          @click="login"
+          :disabled="register && !recapVerified"
+        >
+          {{ register ? 'REGISTER' : 'LOGIN' }}
+        </button>
       </div>
       <div class="d-flex mt-5">
         <router-link
           class="text-center mx-auto forgot-password"
           to="/passwordReset"
-        >Forgot password?</router-link>
+          >Forgot password?</router-link
+        >
       </div>
     </div>
   </div>
@@ -69,6 +90,7 @@ import Rest from '../js/rest';
 import EventBus from '../js/eventbus';
 import Banner from '../components/Banner';
 import Slider from '../components/Slider';
+import VueRecaptcha from 'vue-recaptcha';
 
 export default {
   name: 'Login',
@@ -76,6 +98,7 @@ export default {
   components: {
     Banner,
     Slider,
+    VueRecaptcha,
   },
 
   props: {},
@@ -83,6 +106,10 @@ export default {
   data: function() {
     return {
       register: false,
+
+      siteKey: '',
+      recapResponse: '',
+      recapVerified: false,
 
       username: '',
       password: '',
@@ -99,6 +126,15 @@ export default {
         null,
         true
       );
+    }
+
+    this.siteKey = this.$store.state.reCaptchaSiteKey;
+    if (!this.siteKey) {
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'setReCaptchaSiteKey') {
+          this.siteKey = mutation.payload;
+        }
+      });
     }
 
     Rest.getMe()
@@ -178,7 +214,12 @@ export default {
       }
 
       if (this.register) {
-        Rest.register(this.username, this.password, this.remember)
+        Rest.register(
+          this.username,
+          this.password,
+          this.remember,
+          this.recapResponse
+        )
           .then(() => {
             this.loginRedirect();
             window.localStorage.setItem('reginfo-dismissed', '1');
@@ -289,6 +330,15 @@ export default {
       if (active) {
         window.localStorage.setItem('reginfo-dismissed', '1');
       }
+    },
+
+    recapVerify(response) {
+      this.recapVerified = true;
+      this.recapResponse = response;
+    },
+
+    recapUnverify() {
+      this.recapVerified = false;
     },
   },
 };

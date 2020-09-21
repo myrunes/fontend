@@ -347,3 +347,10 @@ span.tb {
 .w-100 {
   width: 100%;
 }
+
+.viewlimit-width {
+  width: 100%;
+  max-width: 950px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

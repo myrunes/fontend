@@ -19,11 +19,15 @@ Vue.use(AsyncComputed);
 const store = new Vuex.Store({
   state: {
     loggedIn: null,
+    reCaptchaSiteKey: null,
   },
 
   mutations: {
     setLoggedIn(state, v) {
       state.loggedIn = v;
+    },
+    setReCaptchaSiteKey(state, v) {
+      state.reCaptchaSiteKey = v;
     },
   },
 });

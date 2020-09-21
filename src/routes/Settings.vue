@@ -1,10 +1,13 @@
 <!-- @format -->
 
 <template>
-  <div>
+  <div class="viewlimit-width">
     <Banner ref="banner" class="mb-3"></Banner>
     <InfoBubble ref="mailInfo" color="orange">
-      <p>Mail Address changed. Please confirm your Mail Address by following the link in the confirmation mail we have sent to you.</p>
+      <p>
+        Mail Address changed. Please confirm your Mail Address by following the
+        link in the confirmation mail we have sent to you.
+      </p>
       <p>Please also check your spam folder for the mail.</p>
     </InfoBubble>
 
@@ -38,7 +41,9 @@
           class="link"
           href="https://github.com/myrunes/backend/issues/14"
           target="_blank"
-        >this</a> for further informations why sessions were removed from here.
+          >this</a
+        >
+        for further informations why sessions were removed from here.
       </p>
     </div>
 
@@ -47,8 +52,8 @@
       <h3>API ACCESS</h3>
       <h5>API Token</h5>
       <p class="explainer mb-3">
-        The API token is a base64 encoded string which can used to be passed with API requests to authenticate
-        as your account.
+        The API token is a base64 encoded string which can used to be passed
+        with API requests to authenticate as your account.
         <br />
         <b>Keep this key secure! It gives full access on your account!</b>
       </p>
@@ -59,9 +64,19 @@
       <div v-else>
         <i class="text-embed">No API token generated.</i>
       </div>
-      <button class="btn-slide mt-3 mr-3" @click="generateAPIToken">GENERATE TOKEN</button>
-      <button class="btn-slide mt-3 mr-3" @click="deleteAPIToken">DELETE TOKEN</button>
-      <button v-if="apitoken" class="btn-slide mt-3" @click="copyTokenToClipboard">COPY TO CLIPBOARD</button>
+      <button class="btn-slide mt-3 mr-3" @click="generateAPIToken">
+        GENERATE TOKEN
+      </button>
+      <button class="btn-slide mt-3 mr-3" @click="deleteAPIToken">
+        DELETE TOKEN
+      </button>
+      <button
+        v-if="apitoken"
+        class="btn-slide mt-3"
+        @click="copyTokenToClipboard"
+      >
+        COPY TO CLIPBOARD
+      </button>
     </div>
 
     <!-- DATA STORAGE -->
@@ -74,23 +89,34 @@
           class="link"
           href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
           target="_blank"
-        >local storage</a>.
+          >local storage</a
+        >.
         <br />
         <a
           class="link"
           href="https://github.com/myrunes/backend/blob/master/docs/cookie-usage.md"
           target="_blank"
-        >Here</a> you can read about what particular data is saved in the local storage by MYRUNES.
+          >Here</a
+        >
+        you can read about what particular data is saved in the local storage by
+        MYRUNES.
       </p>
-      <button class="btn-slide btn-delete mt-2" @click="deleteLocalStorage">DELETE LOCAL STORAGE</button>
+      <button class="btn-slide btn-delete mt-2" @click="deleteLocalStorage">
+        DELETE LOCAL STORAGE
+      </button>
     </div>
 
     <!-- UPDATE ACCOUNT -->
     <div class="bg" id="update-acc-container">
       <h3 class="mb-3">UPDATE ACCOUNT</h3>
 
-      <div class="bg highlight-zone mb-4" :class="{'highlight': highlightCurrPass}">
-        <p>You need to enter your current password again to apply these changes:</p>
+      <div
+        class="bg highlight-zone mb-4"
+        :class="{ highlight: highlightCurrPass }"
+      >
+        <p>
+          You need to enter your current password again to apply these changes:
+        </p>
         <div class="position-relative">
           <input v-model="currpassword" type="password" class="tb text-left" />
           <span class="tb" />
@@ -104,7 +130,12 @@
           <br />The username must be lowercase, longer than 3 characters and
           must only contain letters, numbers, scores and underscores.
         </p>
-        <input v-model="user.username" type="text" class="tb text-left" @input="unameInput" />
+        <input
+          v-model="user.username"
+          type="text"
+          class="tb text-left"
+          @input="unameInput"
+        />
         <span class="tb" />
       </div>
 
@@ -117,9 +148,10 @@
 
       <div class="position-relative mb-4">
         <h5>Mail Address</h5>
-        <p
-          class="explainer"
-        >Your E-Mail Address, which can be contacted if you forgot your account password.</p>
+        <p class="explainer">
+          Your E-Mail Address, which can be contacted if you forgot your account
+          password.
+        </p>
         <input v-model="user.mailaddress" type="text" class="tb text-left" />
         <span class="tb" />
       </div>
@@ -127,7 +159,12 @@
       <div class="position-relative">
         <h5>New Password</h5>
         <p class="explainer">Enter a new password, if you want to change it.</p>
-        <input ref="tbNewpw" v-model="newpassword" type="password" class="tb text-left" />
+        <input
+          ref="tbNewpw"
+          v-model="newpassword"
+          type="password"
+          class="tb text-left"
+        />
         <span class="tb" />
         <a
           class="ml-2"
@@ -141,14 +178,15 @@
       <div class="mt-4">
         <div class="bg danger-zone mb-3">
           <h5 class="mb-3">DANGER ZONE</h5>
-          <button
-            class="btn-slide btn-delete"
-            @click="deleteAcc"
-          >DELETE ACCOUNT PERMANENTLY AND FOREVER</button>
+          <button class="btn-slide btn-delete" @click="deleteAcc">
+            DELETE ACCOUNT PERMANENTLY AND FOREVER
+          </button>
         </div>
         <div class="text-right">
           <button class="btn-slide btn-save mr-3" @click="save">SAVE</button>
-          <button class="btn-slide btn-cancel" @click="$router.back()">CANCEL</button>
+          <button class="btn-slide btn-cancel" @click="$router.back()">
+            CANCEL
+          </button>
         </div>
       </div>
     </div>

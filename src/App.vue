@@ -20,22 +20,25 @@
           target="_blank"
           class="main-link"
         >
-          changed the password hashing
-          algorithm to argon2.
+          changed the password hashing algorithm to argon2.
         </a>
         <br />Please, go to your
-        <router-link to="/settings" class="main-link">settings</router-link>&nbsp;and change your password
-        in order to switch to the new algorithm.
+        <router-link to="/settings" class="main-link">settings</router-link
+        >&nbsp;and change your password in order to switch to the new algorithm.
         <br />
       </p>
     </InfoBubble>
 
     <!-- INFO BETA WARN -->
-    <InfoBubble ref="betawarn" color="red" @hides="onBetaWarnHides" style="z-index: 110;">
+    <InfoBubble
+      ref="betawarn"
+      color="red"
+      @hides="onBetaWarnHides"
+      style="z-index: 110;"
+    >
       <p class="text-center m-2">
         <b>ATTENTION:</b>&nbsp;This instance is running on a non-release canary
-        build which is not fully tested yet!
-        <br />Actions taken here may lead
+        build which is not fully tested yet! <br />Actions taken here may lead
         to loss or corruption of data!
       </p>
     </InfoBubble>
@@ -91,6 +94,10 @@ export default {
       ) {
         setTimeout(() => this.$refs.betawarn.show(), 1000);
       }
+    });
+
+    Rest.getRecapctchaInfo().then((res) => {
+      this.$store.commit('setReCaptchaSiteKey', res.body.sitekey);
     });
 
     EventBus.$on('login', () => {

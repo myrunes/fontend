@@ -25,7 +25,7 @@ function checkUsername(uname) {
   });
 }
 
-function register(username, password, remember) {
+function register(username, password, remember, recaptcharesponse) {
   return _req({
     url: `${HOST}/users`,
     method: 'POST',
@@ -33,6 +33,7 @@ function register(username, password, remember) {
       username,
       password,
       remember,
+      recaptcharesponse,
     },
   });
 }
@@ -181,6 +182,13 @@ function getVersion() {
   });
 }
 
+function getRecapctchaInfo() {
+  return _req({
+    url: `${HOST}/recaptchainfo`,
+    method: 'GET',
+  });
+}
+
 function getAPIToken() {
   return _req({
     url: `${HOST}/apitoken`,
@@ -239,11 +247,11 @@ function resetPassword(mailaddress) {
   });
 }
 
-function resetPasswordConfirm(token, new_password, page_names) {
+function resetPasswordConfirm(token, new_password, recaptcharesponse) {
   return _req({
     url: `${HOST}/users/me/passwordreset/confirm`,
     method: 'POST',
-    json: { token, new_password, page_names },
+    json: { token, new_password, recaptcharesponse },
   });
 }
 
@@ -292,6 +300,7 @@ export default {
   updateShare,
   deleteShare,
   getVersion,
+  getRecapctchaInfo,
   getAPIToken,
   generateAPIToken,
   deleteAPIToken,

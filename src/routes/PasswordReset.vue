@@ -7,9 +7,14 @@
       <Banner ref="banner" class="mx-auto mb-5"></Banner>
 
       <!-- PASSWORD RESET FORM -->
-      <div v-if="token != null && token.length === 0" class="mx-auto max-w-container">
+      <div
+        v-if="token != null && token.length === 0"
+        class="mx-auto max-w-container"
+      >
         <h2>Password Reset</h2>
-        <p class="mt-5">Please enter your mail address to reset your password.</p>
+        <p class="mt-5">
+          Please enter your mail address to reset your password.
+        </p>
         <p>Then, we will send you an E-Mail with the reset confirmation.</p>
         <input
           v-model="mailaddress"
@@ -22,11 +27,16 @@
           class="btn-bubble mx-auto mt-5"
           :disabled="mailDisabled()"
           @click="resetClick"
-        >RESET PASSWORD</button>
+        >
+          RESET PASSWORD
+        </button>
       </div>
 
       <!-- SSECURITY CHECK -->
-      <div v-if="token != null && token.length > 0" class="mx-auto mb-5 max-w-container">
+      <div
+        v-if="token != null && token.length > 0"
+        class="mx-auto mb-5 max-w-container"
+      >
         <h2>Password Reset Security Check</h2>
         <p class="mt-4">Please enter your new password</p>
         <b-tooltip
@@ -34,7 +44,8 @@
           triggers
           boundary="passwordInput"
           :show="password.length > 0 && password.length < 8"
-        >The password must have at least a length of 8 characters.</b-tooltip>
+          >The password must have at least a length of 8 characters.</b-tooltip
+        >
         <input
           id="passwordInput"
           v-model="password"
@@ -49,34 +60,25 @@
           class="tb text-center mt-4"
           placeholder="Repeat Password"
         />
-        <p
-          class="mt-5"
-        >To ensure that you are really the owner of this account, please enter 3 names of rune pages you have created.</p>
-        <p class="smal-text">
-          If you have less than 3 pages or if you can not remember their names and you
-          really need your account back, please contact us via our contact mail address.
-        </p>
-        <input v-model="page_names[0]" type="text" class="tb text-center" placeholder="Page Name 1" />
         <br />
-        <input
-          v-model="page_names[1]"
-          type="text"
-          class="tb text-center mt-4"
-          placeholder="Page Name 2"
-        />
-        <br />
-        <input
-          v-model="page_names[2]"
-          type="text"
-          class="tb text-center mt-4"
-          placeholder="Page Name 3"
-        />
+        <div class="d-flex mt-5">
+          <vue-recaptcha
+            class="mx-auto"
+            v-if="siteKey"
+            :sitekey="siteKey"
+            @verify="recapVerify"
+            @expired="recapUnverify"
+            @error="recapUnverify"
+          ></vue-recaptcha>
+        </div>
         <br />
         <button
-          class="btn-bubble mx-auto mt-5"
+          class="btn-bubble"
           :disabled="confirmDisabled()"
           @click="resetConfirmClick"
-        >SET PASSWORD</button>
+        >
+          SET PASSWORD
+        </button>
       </div>
     </div>
   </div>
@@ -88,12 +90,14 @@
 import Rest from '../js/rest';
 import EventBus from '../js/eventbus';
 import Banner from '../components/Banner';
+import VueRecaptcha from 'vue-recaptcha';
 
 export default {
   name: 'Login',
 
   components: {
     Banner,
+    VueRecaptcha,
   },
 
   props: {},
@@ -104,15 +108,27 @@ export default {
 
       token: null,
 
+      siteKey: '',
+      recapResponse: '',
+      recapVerified: false,
+
       mailaddress: '',
       password: '',
       passwordRepeated: '',
-      page_names: [],
     };
   },
 
   mounted: function() {
     this.token = this.$route.query.token || '';
+
+    this.siteKey = this.$store.state.reCaptchaSiteKey;
+    if (!this.siteKey) {
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'setReCaptchaSiteKey') {
+          this.siteKey = mutation.payload;
+        }
+      });
+    }
   },
 
   methods: {
@@ -131,11 +147,10 @@ export default {
     },
 
     resetConfirmClick() {
-      Rest.resetPasswordConfirm(this.token, this.password, this.page_names)
+      Rest.resetPasswordConfirm(this.token, this.password, this.recapResponse)
         .then(() => {
           this.password = '';
           this.passwordRepeated = '';
-          this.page_names = [];
           this.$refs.banner.show(
             'info',
             'Your password was reset. You can now log in using your new password.',
@@ -158,14 +173,21 @@ export default {
 
     confirmDisabled() {
       return (
+        !this.recapVerified ||
         !this.password ||
         !this.passwordRepeated ||
         this.password.length < 8 ||
-        this.password !== this.passwordRepeated ||
-        !this.page_names[0] ||
-        !this.page_names[1] ||
-        !this.page_names[2]
+        this.password !== this.passwordRepeated
       );
+    },
+
+    recapVerify(response) {
+      this.recapVerified = true;
+      this.recapResponse = response;
+    },
+
+    recapUnverify() {
+      this.recapVerified = false;
     },
   },
 };
