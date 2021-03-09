@@ -10,6 +10,8 @@ const HOST =
     ? PROD_HOST
     : 'http://localhost:8080/api';
 
+var accessToken;
+
 function getMe() {
   return _req({
     url: `${HOST}/users/me`,
@@ -48,6 +50,15 @@ function login(username, password, remember) {
       remember,
     },
   });
+}
+
+async function obtainAccessKey() {
+  const res = await _req({
+    url: `${HOST}/accesstoken`,
+    method: 'GET',
+  });
+  accessToken = res.body.accesstoken;
+  console.log('SET ACCESS TOKEN', res)
 }
 
 function logout() {
@@ -260,6 +271,9 @@ function resetPasswordConfirm(token, new_password, recaptcharesponse) {
 function _req(options) {
   return new Promise((resolve, rejects) => {
     options.withCredentials = true;
+    if (accessToken) {
+      options.headers = {'Authorization': 'accessToken ' + accessToken};
+    }
     request(options, (err, res, body) => {
       if (err) {
         rejects(err);
@@ -270,7 +284,16 @@ function _req(options) {
 
       if (res.statusCode >= 400) {
         body._headers = res.headers;
-        rejects(body);
+        if (body && body.message === 'invalid access key') {
+          obtainAccessKey()
+            .then(() => {
+              console.log('RETRY', accessToken);
+              _req(options).then(resolve).catch(rejects);
+            })
+            .catch(rejects);
+        } else {
+          rejects(body);
+        }
         return;
       }
       resolve({ res, body });
