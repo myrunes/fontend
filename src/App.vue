@@ -123,7 +123,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log('ERROR', err);
           this.$store.commit('setLoggedIn', false);
           if (!NO_LOGIN_ROUTES.includes(this.$route.name)) {
             this.$router.replace('/login');

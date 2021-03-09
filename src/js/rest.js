@@ -58,7 +58,6 @@ async function obtainAccessKey() {
     method: 'GET',
   });
   accessToken = res.body.accesstoken;
-  console.log('SET ACCESS TOKEN', res)
 }
 
 function logout() {
@@ -286,10 +285,7 @@ function _req(options) {
         body._headers = res.headers;
         if (body && body.message === 'invalid access key') {
           obtainAccessKey()
-            .then(() => {
-              console.log('RETRY', accessToken);
-              _req(options).then(resolve).catch(rejects);
-            })
+            .then(() => _req(options).then(resolve).catch(rejects))
             .catch(rejects);
         } else {
           rejects(body);
