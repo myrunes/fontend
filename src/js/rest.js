@@ -60,6 +60,20 @@ async function obtainAccessKey() {
   accessToken = res.body.accesstoken;
 }
 
+function getRefreshTokens() {
+  return _req({
+    url: `${HOST}/refreshtokens`,
+    method: 'GET'
+  })
+}
+
+function deleteRefreshToken(id) {
+  return _req({
+    url: `${HOST}/refreshtokens/${id}`,
+    method: 'DELETE'
+  })
+}
+
 function logout() {
   return _req({
     url: `${HOST}/logout`,
@@ -303,6 +317,8 @@ export default {
   register,
   login,
   logout,
+  getRefreshTokens,
+  deleteRefreshToken,
   getChamps,
   getRunes,
   getPages,

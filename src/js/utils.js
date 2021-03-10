@@ -107,6 +107,10 @@ function getEnv() {
   return process.env;
 }
 
+function capString(str, len) {
+  return str.length > len ? str.substring(0, len - 3) + '...' : str;
+}
+
 // ----------------------------------
 
 export default {
@@ -119,4 +123,5 @@ export default {
   removeWindowListener,
   copyToClipboard,
   getEnv,
+  capString,
 };
