@@ -35,16 +35,30 @@
         </tbody>
       </table>
 
-      <p class="mt-4">
-        Sessions overview is gone? Read
-        <a
-          class="link"
-          href="https://github.com/myrunes/backend/issues/14"
-          target="_blank"
-          >this</a
-        >
-        for further informations why sessions were removed from here.
-      </p>
+      <div class="mt-3">
+        <h3>LOGIN SESSIONS</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Last Access</th>
+              <th>Deadline</th>
+              <th>User Agent</th>
+              <th>IP Address</th>
+            </tr>
+            <tr v-for="t in refreshtokens" :key="t.uid">
+              <td>{{ t.id }}</td>
+              <td>{{ formatTime(t.lastaccess) }}</td>
+              <td>{{ formatTime(t.deadline) }}</td>
+              <td :title="t.lastaccessclient">{{ capString(t.lastaccessclient, 20) }}</td>
+              <td class="hider">{{ t.lastaccessip }}</td>
+              <td class="pl-3">
+                <div title="Revoke Session" class="btn-del" @click="revokeSession(t.id)"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- API ACESS -->
@@ -213,6 +227,7 @@ export default {
   data: function() {
     return {
       user: {},
+      refreshtokens: [],
       currsessionid: '',
       pages: 0,
       newpassword: '',
@@ -252,6 +267,11 @@ export default {
         if (err && err.code === 404) return;
         console.error(err);
       });
+
+    Rest.getRefreshTokens().then(res => {
+      if (!res.body) return;
+      this.refreshtokens = res.body.data;
+    }).catch(console.error)
   },
 
   methods: {
@@ -422,6 +442,17 @@ export default {
       setTimeout(() => (this.highlightCurrPass = true), 250);
       setTimeout(() => (this.highlightCurrPass = false), 250 + 1000);
     },
+
+    capString(s, l) { return Utils.capString(s, l) },
+
+    revokeSession(sid) {
+      Rest.deleteRefreshToken(sid).then(() => {
+        const i = this.refreshtokens.findIndex(t => t.id === sid);
+        if (i >= 0) {
+          this.refreshtokens.splice(i, 1);
+        }
+      }).catch(console.error);
+    }
   },
 };
 </script>
@@ -444,6 +475,7 @@ export default {
 .hider {
   color: rgb(33, 33, 33) !important;
   background-color: rgb(33, 33, 33);
+  min-width: 145px;
 }
 
 .hider:hover {
@@ -521,5 +553,11 @@ th {
   background-image: url('/assets/trash.svg');
   background-size: 100%;
   cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.20s ease;
+}
+
+.btn-del:hover {
+  opacity: 1;
 }
 </style>
